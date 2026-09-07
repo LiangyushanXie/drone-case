@@ -1,0 +1,277 @@
+{
+  "selection": "seeded selection of 30 filename-prefix groups, then one image per group; no filtering by car count",
+  "limitation": "Filename prefixes are a dispersion heuristic, not verified independent scenes",
+  "seed": 20260907,
+  "samples": [
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000001_08414_d_0000013.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000001_08414_d_0000013.txt",
+      "filename_group": "0000001",
+      "image_sha256": "4b45f869b490c04ea79f5c09f9dde05fdaf59afbc337ae1210c463b00a120b9a",
+      "annotation_sha256": "dd9ba1129dccc8f6095a7fe8d2e2875497616061a387a0d3852955990870ee28",
+      "gt_car_count": 20,
+      "ignored_region_count": 0
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000022_01036_d_0000006.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000022_01036_d_0000006.txt",
+      "filename_group": "0000022",
+      "image_sha256": "b444df95836457c96613401bd1367095daf3c63f0fc891ba8b4a9d2211aa0ba4",
+      "annotation_sha256": "a76139bff03447d774260c5e2d4baebbddd53be49051298ed190f404beba3eb1",
+      "gt_car_count": 0,
+      "ignored_region_count": 0
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000023_00300_d_0000009.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000023_00300_d_0000009.txt",
+      "filename_group": "0000023",
+      "image_sha256": "6923df0685125ca0b0e0cb8b62f6bd2deae981abca0cedf775de054b2c4c58d0",
+      "annotation_sha256": "2b8bd350001f44425f35c3688856001da9303b3b9ac3f970566de70df6e2325e",
+      "gt_car_count": 0,
+      "ignored_region_count": 0
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000069_00483_d_0000002.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000069_00483_d_0000002.txt",
+      "filename_group": "0000069",
+      "image_sha256": "cc628c60ae1a59ead95bf58dc9a30dfacb462b4da09915b8fea45c2a0aad9f5a",
+      "annotation_sha256": "05f93baa7db70e6a7ae204ead64e6a45c0f4b869ea16af325131358f224a27ff",
+      "gt_car_count": 0,
+      "ignored_region_count": 0
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000086_01954_d_0000005.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000086_01954_d_0000005.txt",
+      "filename_group": "0000086",
+      "image_sha256": "049628eddaff7c28796e229c55ad714a1b6001fe2b729874a7a9ab0d606fbcdc",
+      "annotation_sha256": "73ace5f9b7174b0bf63a341d692a1585ba2f5804759547657330db3df54e0c79",
+      "gt_car_count": 0,
+      "ignored_region_count": 2
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000117_00112_d_0000087.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000117_00112_d_0000087.txt",
+      "filename_group": "0000117",
+      "image_sha256": "967609af38e21b50d49fbbd7fcf361c618ce8bc2de6c310fdfb9ae6565f3b2b2",
+      "annotation_sha256": "c4208b576dfa6f00348a07497cabdf5c31db4146cf91652ec554c9cf36667564",
+      "gt_car_count": 11,
+      "ignored_region_count": 2
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000163_00359_d_0000001.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000163_00359_d_0000001.txt",
+      "filename_group": "0000163",
+      "image_sha256": "1b1179ffb9fed6a1bc7ee5165ac2f5b9a86da03566522a7c62b2bab18c7a1b3d",
+      "annotation_sha256": "bb3aad7e42886069c25aa7fc5965923debcdab69ed5d90c3d423fb00a5b9f6c1",
+      "gt_car_count": 9,
+      "ignored_region_count": 2
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000166_00558_d_0000118.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000166_00558_d_0000118.txt",
+      "filename_group": "0000166",
+      "image_sha256": "51670d13c42e0b8c258ab0d1a3130eb6e777629d9930b200c10d1c695520d2c2",
+      "annotation_sha256": "b78a8b4c8980591ecb46ebbdbd83ec60ea147ccf5fc1c6dc6db63b33f0b1a1b5",
+      "gt_car_count": 16,
+      "ignored_region_count": 2
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000193_02416_d_0000116.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000193_02416_d_0000116.txt",
+      "filename_group": "0000193",
+      "image_sha256": "c40f23b0f54e614b58f17d95719ca3b0abb85fa6bc0fad301f1d95bc21bf2799",
+      "annotation_sha256": "02a4bdb4c96c811e1f5c05bc2e8d2e0d0b6910d3431e0a96c2d05210b745af53",
+      "gt_car_count": 2,
+      "ignored_region_count": 0
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000196_04512_d_0000144.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000196_04512_d_0000144.txt",
+      "filename_group": "0000196",
+      "image_sha256": "689a2a82687aef58c9039feec34355c7c6775717cebb50672c10d45aba6591b3",
+      "annotation_sha256": "8ab8bfbd1a3da7347fb83b28c818c3763621823b204f0fcb556f5121d316da48",
+      "gt_car_count": 7,
+      "ignored_region_count": 1
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000213_02965_d_0000241.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000213_02965_d_0000241.txt",
+      "filename_group": "0000213",
+      "image_sha256": "19385bbcd67ae83976bc67b34576139f07a38fedbbcd42426db9b01f7426d643",
+      "annotation_sha256": "58bde8c00fbebc3ca9ed1f6dfc993d67930e3296a3fa791a4c03122f8fa1b770",
+      "gt_car_count": 61,
+      "ignored_region_count": 3
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000215_01395_d_0000259.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000215_01395_d_0000259.txt",
+      "filename_group": "0000215",
+      "image_sha256": "373d4eed9f9dc0cf30681032dfe270d97a841bb4c1ee40dbc193e73def7726e4",
+      "annotation_sha256": "ea327df00d5bc2c5308b8d20b1f95404c5616b325e38a8686ae7015506120860",
+      "gt_car_count": 32,
+      "ignored_region_count": 6
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000220_01242_d_0000004.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000220_01242_d_0000004.txt",
+      "filename_group": "0000220",
+      "image_sha256": "959e11905fb85779f0c01b0373fdc6650c4fe4d741f6902b0d9749a3f1a7ef36",
+      "annotation_sha256": "accf3a909e6c1ce8767f35f9f6ec7d6d5f7a1028c9b980429ad57495590c6e88",
+      "gt_car_count": 16,
+      "ignored_region_count": 2
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000223_01802_d_0000005.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000223_01802_d_0000005.txt",
+      "filename_group": "0000223",
+      "image_sha256": "f31718f8b097c63ae2f1fe2a59521d72ca1e90cb1f8dbb4acb87a39bb3db42d9",
+      "annotation_sha256": "d2d7cd3028063a86930afae2acb209bbdbc65d0209882e44583f31fe66dc4725",
+      "gt_car_count": 38,
+      "ignored_region_count": 1
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000249_01100_d_0000004.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000249_01100_d_0000004.txt",
+      "filename_group": "0000249",
+      "image_sha256": "0ce81dbe536642d0e179ce10049a208ef476dd13fe15d3db7e1c80054c6cc748",
+      "annotation_sha256": "42695ad2db8579f612a1e872f0d40485511c9fe5828664c75bf195a33e147fb6",
+      "gt_car_count": 17,
+      "ignored_region_count": 5
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000263_02401_d_0000179.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000263_02401_d_0000179.txt",
+      "filename_group": "0000263",
+      "image_sha256": "b6fc0da322f4e9905970f8c690d093c535ccfc59f6e2d5b8394b3b5f1161b342",
+      "annotation_sha256": "073a40803aba5bcff0d7e68dfa2b130eaadcab233d1e60a4c1b8fd4a7fb82e76",
+      "gt_car_count": 9,
+      "ignored_region_count": 0
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000277_01801_d_0000548.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000277_01801_d_0000548.txt",
+      "filename_group": "0000277",
+      "image_sha256": "e4f5f83e7f17f569fe556e7bb6b94e1de9ce8a1494538d74428d4117ebcd9025",
+      "annotation_sha256": "42f3c42e0916c04779f8ff77a3c4c0570ee7b2a60f9073d6380162b691136b95",
+      "gt_car_count": 33,
+      "ignored_region_count": 3
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000280_01801_d_0000621.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000280_01801_d_0000621.txt",
+      "filename_group": "0000280",
+      "image_sha256": "70c96b32ef08b25e24557bd8b9ff9974d6537e7d1badc8a108d06d536b3f60aa",
+      "annotation_sha256": "96b7f28cde1870d6da7c01f80c4cb35d3f4120c481a318b201dad6ed161c340b",
+      "gt_car_count": 63,
+      "ignored_region_count": 6
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000283_00601_d_0000677.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000283_00601_d_0000677.txt",
+      "filename_group": "0000283",
+      "image_sha256": "8978a8601609b5947808115f8e87035453b8d38499825decf9abac70d1eaa35e",
+      "annotation_sha256": "b37df3940d61b13e3c0f34c89af3d7f2c4939df8a10b82a278faeecc07c2851f",
+      "gt_car_count": 6,
+      "ignored_region_count": 0
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000293_03601_d_0000940.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000293_03601_d_0000940.txt",
+      "filename_group": "0000293",
+      "image_sha256": "2a4da79988c16e08fcffb64b15aec88060ba9f52012ab42585e9174a2ab788ab",
+      "annotation_sha256": "ef6ecc210ee273a6af2b2069038ddf0fcf50a271de0ad028eae588159557b136",
+      "gt_car_count": 53,
+      "ignored_region_count": 2
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000295_01400_d_0000028.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000295_01400_d_0000028.txt",
+      "filename_group": "0000295",
+      "image_sha256": "b3d497526d77a4af97c4bbf01402850e6c3461347afff8b16d7b0c1083030b3a",
+      "annotation_sha256": "0f44e3de79c7abaf60cc0a036f82c624bebe6b79cb5f0325dc4e6ab779b4e1dc",
+      "gt_car_count": 81,
+      "ignored_region_count": 27
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000296_01001_d_0000040.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000296_01001_d_0000040.txt",
+      "filename_group": "0000296",
+      "image_sha256": "93f5ec0f5994c9299b48a62b3466d18ea5122735d043914b9e9d31e8915099e9",
+      "annotation_sha256": "c9eaa801696a75bff5bc23e3275ea1ffa549eeaa560a9272f24524c793665e49",
+      "gt_car_count": 55,
+      "ignored_region_count": 5
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000300_03201_d_0000154.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000300_03201_d_0000154.txt",
+      "filename_group": "0000300",
+      "image_sha256": "1dbfd7422f497c33ea8013c6c37b6d6901d2f596a9a81afeff957ab58884eaac",
+      "annotation_sha256": "e3e2269b0ec5aa3295ed9cf75e470bb74de1e550f02f06cf45702639fe6b9087",
+      "gt_car_count": 33,
+      "ignored_region_count": 2
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000303_03401_d_0000200.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000303_03401_d_0000200.txt",
+      "filename_group": "0000303",
+      "image_sha256": "35cbee0cfe2d1b545c5c9c7bcc83753ab348606f89209829d28fad3ba8009523",
+      "annotation_sha256": "c230ba8fdbc55b5e923098fd79847abfaad97a402f68ee70691f66cf8a2cf43f",
+      "gt_car_count": 32,
+      "ignored_region_count": 1
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000315_01601_d_0000509.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000315_01601_d_0000509.txt",
+      "filename_group": "0000315",
+      "image_sha256": "57127672b27bc67c60dbe076a1600c5bd026a39b8f18c821573f6d053a1a4611",
+      "annotation_sha256": "86db3ee2ec9365c10cf9b7c75ac49f515ed882b82bbf25344a91f153e372d735",
+      "gt_car_count": 34,
+      "ignored_region_count": 6
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000316_00801_d_0000523.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000316_00801_d_0000523.txt",
+      "filename_group": "0000316",
+      "image_sha256": "1137461b467450dc19aa0569fc4ad390739822eaa0edb037f76e3005c38bedbc",
+      "annotation_sha256": "9530ccb17a42ef7719ed48653d61c837b9298dea772453403d9927b92624255b",
+      "gt_car_count": 9,
+      "ignored_region_count": 10
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000327_02801_d_0000725.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000327_02801_d_0000725.txt",
+      "filename_group": "0000327",
+      "image_sha256": "09ab3710bdf59061cf74ebbb26f000e2f7f982116c94b06e9d666bc244d65739",
+      "annotation_sha256": "6e24e814d7eb655025c1cd104ecaf8383af1daf3768fe4c59b2e7461acc2695e",
+      "gt_car_count": 27,
+      "ignored_region_count": 0
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000330_04401_d_0000822.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000330_04401_d_0000822.txt",
+      "filename_group": "0000330",
+      "image_sha256": "b9093506e27bcbf6f4b33b449d7f983654a6cff21513b5dd3e2e9a5e9d955ba9",
+      "annotation_sha256": "7f13e3c6fbd84214abe6cc510dd49e39dce749024f95e1cd2b8c04788a0b319a",
+      "gt_car_count": 13,
+      "ignored_region_count": 0
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000342_00393_d_0000244.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000342_00393_d_0000244.txt",
+      "filename_group": "0000342",
+      "image_sha256": "0c6d87602fcb9974ad9f8ec4ec3a3d4f81cdf35c5dd176d918cbfd29fa5d15c8",
+      "annotation_sha256": "8495c925aa418e393d89f8917483fbd7c51502c7366ed74cb838af4f2ea3b715",
+      "gt_car_count": 50,
+      "ignored_region_count": 8
+    },
+    {
+      "image": "data/raw/VisDrone2019-DET-val/images/0000359_00393_d_0000701.jpg",
+      "annotation": "data/raw/VisDrone2019-DET-val/annotations/0000359_00393_d_0000701.txt",
+      "filename_group": "0000359",
+      "image_sha256": "46a3c270496d8b973f0cd5379415bdce62acdb4c76cb201272bc1d7ea2312e6e",
+      "annotation_sha256": "edfabecad139f4b2c7e94f34a5fa53d71fc81f045ef44899c931a404697ef6d3",
+      "gt_car_count": 12,
+      "ignored_region_count": 4
+    }
+  ]
+}

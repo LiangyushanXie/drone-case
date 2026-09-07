@@ -1,0 +1,2 @@
+# Lightweight code checks only; no ML framework is installed on Mac.
+ruff==0.16.6

@@ -1,0 +1,21 @@
+{
+  "model": "YOLOv12-Turbo-S",
+  "upstream_repository": "https://github.com/sunsmarterjie/yolov12",
+  "upstream_revision": "01a22c0603e0eaa6d9bd62120a391e744d92cea2",
+  "weights_url": "https://github.com/sunsmarterjie/yolov12/releases/download/turbo/yolov12s.pt",
+  "weights_name": "yolov12s.pt",
+  "weights_bytes": 18708559,
+  "image_size": 640,
+  "batch_size": 1,
+  "confidence": 0.25,
+  "nms_iou": 0.70,
+  "max_detections": 300,
+  "half_precision": false,
+  "coco_class_id": 2,
+  "visdrone_class_id": 4,
+  "class_name": "car",
+  "sample_count": 30,
+  "sample_seed": 20260907,
+  "validation_directory": "data/raw/VisDrone2019-DET-val",
+  "sample_manifest": "configs/visdrone_car_preview_samples.json"
+}

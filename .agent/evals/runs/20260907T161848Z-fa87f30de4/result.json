@@ -1,0 +1,176 @@
+{
+  "base_head": "397ce12ddfb00931a3c26d74fd85048ccb01699b",
+  "candidate_fingerprint": "fa87f30de44c5b2c9317f92fa67462280c35e62d1b9a922cf473ff17af5f598e",
+  "created_at": "2026-09-07T16:18:48Z",
+  "dimensions": [
+    {
+      "evidence": "fresh passing evidence",
+      "id": "verification",
+      "score": 100,
+      "title": "Verification and evidence freshness",
+      "weight": 25
+    },
+    {
+      "evidence": "state and control plane valid",
+      "id": "harness_integrity",
+      "score": 100,
+      "title": "Harness state and control-plane integrity",
+      "weight": 20
+    },
+    {
+      "evidence": "index matches relevant worktree and secret scan passed",
+      "id": "change_hygiene",
+      "score": 100,
+      "title": "Candidate boundary and sensitive-data hygiene",
+      "weight": 15
+    },
+    {
+      "evidence": "every completed acceptance item has evidence",
+      "id": "acceptance_evidence",
+      "score": 100,
+      "title": "Acceptance evidence integrity",
+      "weight": 15
+    },
+    {
+      "evidence": "review packets, writer lease, and blockers are clear",
+      "id": "review_and_lease",
+      "score": 100,
+      "title": "Review, blocker, and writer-lease integrity",
+      "weight": 15
+    },
+    {
+      "evidence": "state revision and event timeline are present",
+      "id": "traceability",
+      "score": 100,
+      "title": "Task and event traceability",
+      "weight": 10
+    }
+  ],
+  "eval_id": "EVL-265f044c61f44aeeaf42314aecc0a194",
+  "hard_gates": [
+    {
+      "details": [],
+      "id": "verification_fresh",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "harness_valid",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "lease_boundary",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "no_unstaged_product_changes",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "secret_scan",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "no_recorded_blockers",
+      "passed": true
+    }
+  ],
+  "harness_version": "eval-baseline-v1",
+  "pass_threshold": 85,
+  "profile_rubrics": [
+    {
+      "dimensions": [
+        {
+          "id": "sources",
+          "title": "Source quality and claim traceability",
+          "weight": 20
+        },
+        {
+          "id": "experimental_validity",
+          "title": "Experimental design and validity",
+          "weight": 25
+        },
+        {
+          "id": "reproducibility",
+          "title": "Reproducibility and provenance",
+          "weight": 20
+        },
+        {
+          "id": "uncertainty",
+          "title": "Uncertainty and alternative explanations",
+          "weight": 15
+        },
+        {
+          "id": "synthesis",
+          "title": "Knowledge synthesis and transfer",
+          "weight": 20
+        }
+      ],
+      "note": "Semantic scoring is performed by a triggered independent review, not by the commit hook.",
+      "profile": "research-learning",
+      "status": "advisory_not_scored"
+    },
+    {
+      "dimensions": [
+        {
+          "id": "correctness",
+          "title": "Algorithm and product correctness",
+          "weight": 25
+        },
+        {
+          "id": "tests",
+          "title": "Test depth and regression coverage",
+          "weight": 20
+        },
+        {
+          "id": "architecture",
+          "title": "Architecture and maintainability",
+          "weight": 15
+        },
+        {
+          "id": "evaluation",
+          "title": "Benchmark and model-evaluation validity",
+          "weight": 15
+        },
+        {
+          "id": "runtime",
+          "title": "Runtime, deployment, and operability",
+          "weight": 15
+        },
+        {
+          "id": "documentation",
+          "title": "Technical documentation and handoff",
+          "weight": 10
+        }
+      ],
+      "note": "Semantic scoring is performed by a triggered independent review, not by the commit hook.",
+      "profile": "ai-engineering",
+      "status": "advisory_not_scored"
+    }
+  ],
+  "schema_version": 1,
+  "scope": "staged",
+  "score": 100,
+  "staged_paths": [
+    ".gitignore",
+    "README.md",
+    "configs/visdrone_car_preview_samples.json",
+    "configs/yolov12s_car_preview.json",
+    "data_utils.py",
+    "docs/first-preview.md",
+    "model_arch.py",
+    "requirements-dev.txt",
+    "requirements-runtime.txt",
+    "ruff.toml",
+    "run_inference.py",
+    "scripts/setup_mygpu.sh",
+    "tests/test_preview.py"
+  ],
+  "status": "pass",
+  "task_id": "yolov12s-car-preview-20260907",
+  "verification_bundle": ".agent/evidence/verification/20260907T155659Z-eee5600e"
+}

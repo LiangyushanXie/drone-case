@@ -1,0 +1,4 @@
+# MyGPU only. Reuse a CUDA-enabled PyTorch environment supporting the RTX 5090.
+# Install this pinned author package with --no-deps in the isolated runtime.
+ultralytics @ git+https://github.com/sunsmarterjie/yolov12.git@01a22c0603e0eaa6d9bd62120a391e744d92cea2
+Pillow==11.3.0

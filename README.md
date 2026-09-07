@@ -2,6 +2,15 @@
 
 A personal computer-vision learning project: start with **VisDrone2019-DET**, understand small-object detection, then evaluate on independently collected DJI imagery.
 
+## First model preview
+
+The agreed first experiment uses COCO-pretrained YOLOv12-S, 640-square input,
+car-only predictions, 30 dispersed validation images, confidence 0.25 and NMS IoU
+0.70. The root-level `model_arch.py`, `data_utils.py` and `run_inference.py` implement
+this preview. Model execution belongs on MyGPU; Mac tests require no ML framework.
+See [the configuration and code walkthrough](docs/first-preview.md). Runtime results
+are pending until an actual GPU run is verified.
+
 ## Data ready for inspection
 
 The three labeled detection splits are included in `data/raw/` with original image filenames and annotation files:
