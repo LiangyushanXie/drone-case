@@ -1,0 +1,36 @@
+__pycache__/
+*.pyc
+.DS_Store
+.codex-log/
+.agent/.state.lock
+.agent/.events.lock
+.agent/reviews/.locks/
+.agent/reviews/**/.run.lock
+# Real-task Case Bundles stay local by default because they may contain project context.
+.agent/harness-cases/*/
+
+# Large local inputs and outputs
+data/archives/
+artifacts/
+runs/
+checkpoints/
+.venv/
+*.zip
+*.tar
+*.tar.gz
+*.pt
+*.pth
+*.safetensors
+.env
+.env.*
+# Project-local governance stays local for this public learning repository
+.agent/
+.kimi-code/
+.codex/
+.githooks/
+harness
+AGENTS.md
+
+**/.cache/
+*.part
+*.assembling

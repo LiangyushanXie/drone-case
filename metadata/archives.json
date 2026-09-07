@@ -1,0 +1,23 @@
+[
+  {
+    "name": "VisDrone2019-DET-train.zip",
+    "bytes": 1549875511,
+    "sha256": "86a77eba93137bfc16e4993860de9245b0675c0dba0d3ab98fb458699e256f84",
+    "zip_members": 12945,
+    "crc_check": "passed"
+  },
+  {
+    "name": "VisDrone2019-DET-val.zip",
+    "bytes": 81638851,
+    "sha256": "abeea063037e5d20398837deb11084e652402a34ddf4f207bdf541a6f2a35ef9",
+    "zip_members": 1100,
+    "crc_check": "passed"
+  },
+  {
+    "name": "VisDrone2019-DET-test-dev.zip",
+    "bytes": 311251787,
+    "sha256": "b28a94b06dfd9e36ce77ff8155fb82b9d2c030f198a76105933bd56c6ea6a68d",
+    "zip_members": 3224,
+    "crc_check": "passed"
+  }
+]

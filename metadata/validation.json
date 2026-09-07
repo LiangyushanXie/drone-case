@@ -1,0 +1,91 @@
+{
+  "dataset": "VisDrone2019-DET",
+  "splits": {
+    "train": {
+      "images": 6471,
+      "annotation_files": 6471,
+      "boxes": 353550,
+      "ignored_regions": 10345,
+      "out_of_bounds_boxes": 0,
+      "nonpositive_boxes": 3,
+      "category_ids": {
+        "0": 8813,
+        "1": 79337,
+        "10": 29647,
+        "11": 1532,
+        "2": 27059,
+        "3": 10480,
+        "4": 144867,
+        "5": 24956,
+        "6": 12875,
+        "7": 4812,
+        "8": 3246,
+        "9": 5926
+      }
+    },
+    "val": {
+      "images": 548,
+      "annotation_files": 548,
+      "boxes": 40169,
+      "ignored_regions": 1410,
+      "out_of_bounds_boxes": 0,
+      "nonpositive_boxes": 0,
+      "category_ids": {
+        "0": 1378,
+        "1": 8844,
+        "10": 4886,
+        "11": 32,
+        "2": 5125,
+        "3": 1287,
+        "4": 14064,
+        "5": 1975,
+        "6": 750,
+        "7": 1045,
+        "8": 532,
+        "9": 251
+      }
+    },
+    "test-dev": {
+      "images": 1610,
+      "annotation_files": 1610,
+      "boxes": 77547,
+      "ignored_regions": 2445,
+      "out_of_bounds_boxes": 0,
+      "nonpositive_boxes": 0,
+      "category_ids": {
+        "0": 2180,
+        "1": 21006,
+        "10": 5845,
+        "11": 265,
+        "2": 6376,
+        "3": 1302,
+        "4": 28074,
+        "5": 5771,
+        "6": 2659,
+        "7": 530,
+        "8": 599,
+        "9": 2940
+      }
+    }
+  },
+  "fatal_errors": [],
+  "warnings": [
+    "train: original box geometry requires review; no corrections made"
+  ],
+  "duplicate_image_groups": [
+    [
+      "train/0000239_06450_d_0000017.jpg",
+      "train/0000239_06950_d_0000018.jpg"
+    ],
+    [
+      "train/9999950_00000_d_0000079.jpg",
+      "train/9999950_00000_d_10000080.jpg"
+    ],
+    [
+      "val/0000022_00000_d_0000004.jpg",
+      "val/0000023_00000_d_0000008.jpg"
+    ]
+  ],
+  "cross_split_duplicate_groups": [],
+  "status": "passed_with_warnings"
+}
