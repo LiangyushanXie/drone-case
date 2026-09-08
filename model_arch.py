@@ -53,6 +53,23 @@ def prediction_arguments(config):
     }
 
 
+def build_square_predictor():
+    """Return a scoped predictor class; framework imports stay on MyGPU."""
+    from ultralytics.data.augment import LetterBox
+    from ultralytics.models.yolo.detect.predict import DetectionPredictor
+
+    class SquareDetectionPredictor(DetectionPredictor):
+        def pre_transform(self, images):
+            # The pinned author's default pre_transform ignores rect=False.
+            # Disable automatic minimal padding while preserving aspect ratio.
+            letterbox = LetterBox(
+                new_shape=self.imgsz, auto=False, stride=self.model.stride
+            )
+            return [letterbox(image=image) for image in images]
+
+    return SquareDetectionPredictor
+
+
 def build_detector(config, weights):
     """Called only on MyGPU; refuse an unintended CPU/Mac or YOLO implementation."""
     import torch

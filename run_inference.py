@@ -13,6 +13,7 @@ from model_arch import (
     DEFAULT_CONFIG,
     ROOT,
     build_detector,
+    build_square_predictor,
     load_config,
     prediction_arguments,
 )
@@ -98,6 +99,7 @@ def main():
     if receipt["url"] != config["weights_url"] or receipt["sha256"] != weight_hash:
         raise ValueError("Checkpoint differs from the recorded official download")
     detector, environment = build_detector(config, args.weights)
+    predictor_class = build_square_predictor()
     (output / "architecture.txt").write_text(str(detector.model) + "\n")
     observed_inputs = []
 
@@ -122,7 +124,9 @@ def main():
             )
             before = len(observed_inputs)
             result = detector.predict(
-                source=str(image_path), **prediction_arguments(config)
+                source=str(image_path),
+                predictor=predictor_class,
+                **prediction_arguments(config),
             )[0]
             if len(observed_inputs) <= before:
                 raise RuntimeError("The actual model input was not observed")

@@ -17,7 +17,7 @@ The implementation preserves the pretrained architecture. There is no additional
 
 ## Code map
 
-- `model_arch.py`: loads the original detector and defines the explicit prediction arguments.
+- `model_arch.py`: loads the original detector, defines prediction arguments and supplies the square-letterbox predictor.
 - `data_utils.py`: reads original TXT annotations and prepares a reproducible sample manifest.
 - `run_inference.py`: verifies inputs, runs CUDA inference and writes paired images, predictions, counts and provenance.
 - `scripts/setup_mygpu.sh`: installs the author package into an isolated remote environment and downloads the official weight. It refuses to run on Mac.
@@ -44,9 +44,27 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 
 For the pinned lightweight linter, install `requirements-dev.txt` into the Mac
 development environment and run `ruff check model_arch.py data_utils.py
-run_inference.py tests/test_preview.py`. This installs no model framework.
+run_inference.py tests/test_preview.py tests/test_runtime_preprocessing.py`.
+This installs no model framework.
 
 The second command is a dry run: it verifies the selected files and prints arguments without importing Torch or Ultralytics. Once the sample manifest is committed, use the same manifest on both machines.
+
+## Fixed square input
+
+The pinned author's predictor applies minimal padding even with `rect=False`,
+which can turn a landscape image into a `[1, 3, 384, 640]` tensor. The preview
+supplies its own `DetectionPredictor` subclass with `LetterBox(auto=False)`.
+It preserves image proportions and pads to the agreed `640x640`; the input
+shape guard and upstream mapping of boxes back to original pixels stay active.
+
+On MyGPU, the following regression tests exercise actual preprocessing of
+landscape, portrait and square images, all 30 selected samples, and box-coordinate
+restoration. They do not load weights or execute the network. On Mac, these runtime
+tests explicitly skip when the ML packages are absent.
+
+```bash
+.venv-runtime/bin/python -m unittest discover -s tests -p 'test_runtime_preprocessing.py' -v
+```
 
 ## MyGPU: execute the committed revision
 
@@ -81,4 +99,7 @@ Sources: [YOLOv12 author implementation](https://github.com/sunsmarterjie/yolov1
 
 ## Current delivery boundary
 
-The requested delivery stops after code synchronization to MyGPU. Runtime setup and the `--execute` command are documented next steps for Bruce to review and run together later; they have not been executed as part of this slice.
+The square-input correction follows Mac commit, GitHub push and MyGPU pull.
+Its automated runtime checks exercise preprocessing without loading weights or
+executing the network. Bruce runs `run_inference.py --execute` to produce and
+inspect the detection results.

@@ -1,0 +1,167 @@
+{
+  "base_head": "dc390f711bc21a130d5d9b32d2c6e40ac2bc22c7",
+  "candidate_fingerprint": "24ad4465c0476b8c7022a90745c30c51a01bfdac2c73fb86d0f91ccd1feb8c16",
+  "created_at": "2026-09-08T07:05:29Z",
+  "dimensions": [
+    {
+      "evidence": "fresh passing evidence",
+      "id": "verification",
+      "score": 100,
+      "title": "Verification and evidence freshness",
+      "weight": 25
+    },
+    {
+      "evidence": "state and control plane valid",
+      "id": "harness_integrity",
+      "score": 100,
+      "title": "Harness state and control-plane integrity",
+      "weight": 20
+    },
+    {
+      "evidence": "index matches relevant worktree and secret scan passed",
+      "id": "change_hygiene",
+      "score": 100,
+      "title": "Candidate boundary and sensitive-data hygiene",
+      "weight": 15
+    },
+    {
+      "evidence": "every completed acceptance item has evidence",
+      "id": "acceptance_evidence",
+      "score": 100,
+      "title": "Acceptance evidence integrity",
+      "weight": 15
+    },
+    {
+      "evidence": "review packets, writer lease, and blockers are clear",
+      "id": "review_and_lease",
+      "score": 100,
+      "title": "Review, blocker, and writer-lease integrity",
+      "weight": 15
+    },
+    {
+      "evidence": "state revision and event timeline are present",
+      "id": "traceability",
+      "score": 100,
+      "title": "Task and event traceability",
+      "weight": 10
+    }
+  ],
+  "eval_id": "EVL-7dcb4a2bc076483eaabc4c27fe93867a",
+  "hard_gates": [
+    {
+      "details": [],
+      "id": "verification_fresh",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "harness_valid",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "lease_boundary",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "no_unstaged_product_changes",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "secret_scan",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "no_recorded_blockers",
+      "passed": true
+    }
+  ],
+  "harness_version": "eval-baseline-v1",
+  "pass_threshold": 85,
+  "profile_rubrics": [
+    {
+      "dimensions": [
+        {
+          "id": "sources",
+          "title": "Source quality and claim traceability",
+          "weight": 20
+        },
+        {
+          "id": "experimental_validity",
+          "title": "Experimental design and validity",
+          "weight": 25
+        },
+        {
+          "id": "reproducibility",
+          "title": "Reproducibility and provenance",
+          "weight": 20
+        },
+        {
+          "id": "uncertainty",
+          "title": "Uncertainty and alternative explanations",
+          "weight": 15
+        },
+        {
+          "id": "synthesis",
+          "title": "Knowledge synthesis and transfer",
+          "weight": 20
+        }
+      ],
+      "note": "Semantic scoring is performed by a triggered independent review, not by the commit hook.",
+      "profile": "research-learning",
+      "status": "advisory_not_scored"
+    },
+    {
+      "dimensions": [
+        {
+          "id": "correctness",
+          "title": "Algorithm and product correctness",
+          "weight": 25
+        },
+        {
+          "id": "tests",
+          "title": "Test depth and regression coverage",
+          "weight": 20
+        },
+        {
+          "id": "architecture",
+          "title": "Architecture and maintainability",
+          "weight": 15
+        },
+        {
+          "id": "evaluation",
+          "title": "Benchmark and model-evaluation validity",
+          "weight": 15
+        },
+        {
+          "id": "runtime",
+          "title": "Runtime, deployment, and operability",
+          "weight": 15
+        },
+        {
+          "id": "documentation",
+          "title": "Technical documentation and handoff",
+          "weight": 10
+        }
+      ],
+      "note": "Semantic scoring is performed by a triggered independent review, not by the commit hook.",
+      "profile": "ai-engineering",
+      "status": "advisory_not_scored"
+    }
+  ],
+  "schema_version": 1,
+  "scope": "staged",
+  "score": 100,
+  "staged_paths": [
+    "docs/first-preview.md",
+    "model_arch.py",
+    "run_inference.py",
+    "tests/test_runtime_preprocessing.py"
+  ],
+  "status": "pass",
+  "task_id": "square-input-fix-20260908",
+  "verification_bundle": ".agent/evidence/verification/20260908T070024Z-1861ee4c"
+}
