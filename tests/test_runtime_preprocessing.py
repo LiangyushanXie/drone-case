@@ -56,6 +56,18 @@ class RuntimePreprocessingTests(unittest.TestCase):
                 self.assertIsNotNone(image)
                 self.assert_square_tensor(image)
 
+    def test_960_input_and_640_crop_preserve_source_pixels(self):
+        image = self.np.zeros((1080, 1920, 3), dtype=self.np.uint8)
+        image[..., 2] = 255
+        self.predictor.imgsz = [960, 960]
+        tensor = self.predictor.preprocess([image])
+        self.assertEqual(list(tensor.shape), [1, 3, 960, 960])
+        self.assertEqual(tensor[0, :, 480, 480].tolist(), [1.0, 0.0, 0.0])
+        self.predictor.imgsz = [640, 640]
+        self.assert_square_tensor(image[200:840, 512:1152])
+        self.assertTrue(self.np.all(image[..., 2] == 255))
+        self.assertTrue(self.np.all(image[..., :2] == 0))
+
     def test_boxes_restore_to_original_image_coordinates(self):
         for height, width in [(1080, 1920), (1920, 1080), (640, 640), (1025, 1921)]:
             with self.subTest(height=height, width=width):

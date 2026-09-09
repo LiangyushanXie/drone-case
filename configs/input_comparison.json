@@ -1,0 +1,15 @@
+{
+  "base_config": "configs/yolov12s_car_preview.json",
+  "whole_image_size": 960,
+  "tile_size": 640,
+  "tile_input_size": 640,
+  "tile_overlap": 0.20,
+  "tile_merge_nms_iou": 0.70,
+  "include_full_image_in_sliced": false,
+  "match_iou": 0.50,
+  "ignore_coverage": 0.50,
+  "size_group_boundaries_at_baseline": [16, 32, 96],
+  "seed": 20260909,
+  "focus_image_indices": [1, 6, 7, 11],
+  "reference_baseline_run": "runs/yolov12s-car-20260908T074516Z"
+}

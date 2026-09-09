@@ -8,8 +8,16 @@ The agreed first experiment uses COCO-pretrained YOLOv12-S, 640-square input,
 car-only predictions, 30 dispersed validation images, confidence 0.25 and NMS IoU
 0.70. The root-level `model_arch.py`, `data_utils.py` and `run_inference.py` implement
 this preview. Model execution belongs on MyGPU; Mac tests require no ML framework.
-See [the configuration and code walkthrough](docs/first-preview.md). Runtime results
-are pending until an actual GPU run is verified.
+See [the configuration and code walkthrough](docs/first-preview.md). Generated
+runtime artifacts are saved locally under the ignored runs/ directory.
+
+## Compare input strategies
+
+The next experiment compares the same detector and 30 images using whole-image
+640, whole-image 960, and tile-only 640 inputs with 20% nominal overlap. The new
+compare_inputs.py entry point generates four-column GT/prediction images and
+diagnostic TP/FP/FN, size/occlusion recall, recovery and timing tables. There is no
+training or model-architecture change. See [the experiment and run instructions](docs/input-comparison.md).
 
 ## Data ready for inspection
 
