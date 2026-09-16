@@ -155,6 +155,7 @@ class IgnoreLoss(v8DetectionLoss):
             gt_bboxes,
             gt_bboxes.sum(2, keepdim=True).gt_(0.0),
         )
+        foreground = foreground.bool()  # Upstream returns float masks for batches with no GT.
         denominator = max(target_scores.sum(), 1)
         ignored = ignored_anchor_centers(
             anchors * strides, batch["ignore_boxes"], batch["img"].shape[-2:]
