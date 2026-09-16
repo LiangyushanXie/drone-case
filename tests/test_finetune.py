@@ -1,9 +1,12 @@
+import json
+import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from finetune_metrics import interpolated_ap, match_overlaps, summarize_records
 from run_finetune import load_training_config, training_arguments
-from run_finetune_suite import build_jobs
+from run_finetune_suite import build_jobs, next_capacity_batch, wait_for_existing_batch8
 
 
 class FineTuneTests(unittest.TestCase):
@@ -63,13 +66,37 @@ class FineTuneTests(unittest.TestCase):
                 (batch, batch, 0.0003, 50),
             )
 
-    def test_batch_suite_order_and_separate_initialization_runs(self):
+    def test_followup_never_queues_full_training(self):
         jobs = build_jobs(Path("/tmp/suite"))
-        self.assertEqual(
-            [(j["batch"], j["smoke"]) for j in jobs],
-            [(8, False), (16, True), (16, False), (20, True), (20, False)],
-        )
+        self.assertEqual([j["batch"] for j in jobs], [8, 16, 20])
+        self.assertTrue(all(j["kind"] == "throughput_only" for j in jobs))
         self.assertEqual(len(set(j["output"] for j in jobs)), len(jobs))
+
+    def test_capacity_stops_on_oom_or_instability_and_has_bound(self):
+        results = [{"batch": b, "status": "completed", "stable": True} for b in (8, 16, 20)]
+        self.assertEqual(next_capacity_batch(results), 24)
+        self.assertIsNone(
+            next_capacity_batch(results + [{"batch": 24, "status": "oom", "stable": False}])
+        )
+        self.assertIsNone(
+            next_capacity_batch(results + [{"batch": 24, "status": "completed", "stable": False}])
+        )
+        self.assertIsNone(
+            next_capacity_batch(results + [{"batch": 64, "status": "completed", "stable": True}])
+        )
+
+    def test_followup_waits_for_old_cuda_process_release(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "run.json").write_text(
+                json.dumps({"status": "completed", "epochs_completed": 50, "smoke": False})
+            )
+            with (
+                patch("run_finetune_suite.process_matches", side_effect=[True, False]),
+                patch("run_finetune_suite.time.sleep") as sleep,
+            ):
+                self.assertEqual(wait_for_existing_batch8(root, 123)["epochs_completed"], 50)
+                sleep.assert_called_once_with(1)
 
 
 if __name__ == "__main__":

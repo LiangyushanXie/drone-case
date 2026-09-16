@@ -1,9 +1,8 @@
-"""Durable sequential batch8 → batch16 → batch20 experiment queue on MyGPU."""
+"""Attach to existing batch8; after completion run short capacity probes only."""
 
 import argparse
 import json
 import os
-import shutil
 import subprocess
 import sys
 import time
@@ -21,174 +20,230 @@ def write_json(path, value):
 
 
 def build_jobs(root):
-    jobs = []
-    for batch in (8, 16, 20):
-        # Batch8 has already passed the recorded crowded-scene smoke on this implementation.
-        if batch != 8:
-            jobs.append(
-                {"batch": batch, "smoke": True, "output": str(root / f"probe-batch{batch}")}
+    return [
+        {"batch": batch, "kind": "throughput_only", "output": str(root / f"batch{batch}")}
+        for batch in (8, 16, 20)
+    ]
+
+
+def next_capacity_batch(results):
+    """Bounded four-image increments after requested probes, stop on OOM/instability."""
+    if len(results) < 3 or any(r["status"] != "completed" or not r.get("stable") for r in results):
+        return None
+    largest = max(r["batch"] for r in results)
+    return largest + 4 if largest < 64 else None
+
+
+def process_matches(pid, batch8_path):
+    proc = Path(f"/proc/{pid}")
+    try:
+        command = (proc / "cmdline").read_bytes().replace(b"\0", b" ").decode()
+        status = (proc / "status").read_text()
+    except FileNotFoundError:
+        return False
+    return (
+        "run_finetune.py" in command and str(batch8_path) in command and "\nState:\tZ" not in status
+    )
+
+
+def wait_for_existing_batch8(batch8_path, pid):
+    """Read-only attachment: never signal, restart, resume, or overwrite the training process."""
+    while True:
+        manifest = batch8_path / "run.json"
+        result = json.loads(manifest.read_text()) if manifest.exists() else {}
+        if result.get("status") == "completed":
+            if result["epochs_completed"] != 50 or result.get("smoke"):
+                raise RuntimeError("Existing run is not the requested completed50epoch baseline")
+            while process_matches(pid, batch8_path):
+                time.sleep(1)  # Wait for CUDA context release before measuring another batch.
+            return result
+        if not process_matches(pid, batch8_path):
+            raise RuntimeError(
+                "Existing batch8 process ended without a complete result; inspect its log"
             )
-        jobs.append({"batch": batch, "smoke": False, "output": str(root / f"batch{batch}")})
-    return jobs
+        progress = batch8_path / "progress.json"
+        if progress.exists():
+            state = json.loads(progress.read_text())
+            print(
+                f"Waiting for existing batch8: {state['epoch']}/50 validated; bestAP={state['best_fitness']:.5f}",
+                flush=True,
+            )
+        time.sleep(30)
 
 
-def run_job(job, log_path):
+def run_probe(job, output):
+    log_path = output / f"batch{job['batch']}.log"
     command = [
         sys.executable,
         "-u",
-        str(ROOT / "run_finetune.py"),
+        str(ROOT / "benchmark_finetune.py"),
         "--execute",
         "--batch",
         str(job["batch"]),
         "--output",
         job["output"],
     ]
-    if job["smoke"]:
-        command.append("--smoke")
-    environment = {**os.environ, "OMP_NUM_THREADS": "8", "MKL_NUM_THREADS": "8"}
-    start = time.monotonic()
-    with log_path.open("w") as log:
-        process = subprocess.Popen(
-            command, cwd=ROOT, env=environment, stdout=log, stderr=subprocess.STDOUT
+    print(f"Starting short throughput/memory probe batch{job['batch']}", flush=True)
+    with log_path.open("w") as stream:
+        completed = subprocess.run(
+            command,
+            cwd=ROOT,
+            stdout=stream,
+            stderr=subprocess.STDOUT,
+            env={**os.environ, "OMP_NUM_THREADS": "8", "MKL_NUM_THREADS": "8"},
         )
-        print(
-            json.dumps(
-                {
-                    "event": "started",
-                    "batch": job["batch"],
-                    "smoke": job["smoke"],
-                    "pid": process.pid,
-                    "log": str(log_path),
-                }
-            ),
-            flush=True,
-        )
-        while process.poll() is None:
-            progress = Path(job["output"]) / "progress.json"
-            if progress.exists():
-                state = json.loads(progress.read_text())
-                print(
-                    json.dumps(
-                        {"event": "progress", "batch": job["batch"], "smoke": job["smoke"], **state}
-                    ),
-                    flush=True,
-                )
-            time.sleep(20)
+    path = Path(job["output"]) / "benchmark.json"
+    if completed.returncode or not path.exists():
+        raise RuntimeError(f"Benchmark failure; inspect {log_path}")
+    result = json.loads(path.read_text())
+    if result["status"] not in ("completed", "oom"):
+        raise RuntimeError(f"Unexpected benchmark status: {result['status']}")
     job.update(
-        returncode=process.returncode,
-        elapsed_seconds=time.monotonic() - start,
-        log=str(log_path),
-        command=command,
-    )
-    if process.returncode:
-        # Only a genuine capacity failure permits skipping this batch, not arbitrary code failures.
-        tail = log_path.read_text(errors="replace")[-10000:]
-        if job["smoke"] and ("torch.OutOfMemoryError" in tail or "CUDA out of memory" in tail):
-            job["status"] = "skipped_oom"
-            job["failure_tail"] = tail[-2000:]
-            return
-        job["status"] = "failed"
-        raise RuntimeError(f"Job failed; inspect {log_path}")
-    result = json.loads((Path(job["output"]) / "run.json").read_text())
-    if result["status"] != "completed" or result["epochs_completed"] != (1 if job["smoke"] else 50):
-        raise RuntimeError("Job exited without complete verified results")
-    job.update(
-        status="completed",
-        run_manifest_sha256=sha256(Path(job["output"]) / "run.json"),
-        result=result,
+        status=result["status"], result=result, log=str(log_path), result_sha256=sha256(path)
     )
     print(
         json.dumps(
             {
-                "event": "completed",
-                "batch": job["batch"],
-                "smoke": job["smoke"],
-                "epochs": result["epochs_completed"],
+                k: result.get(k)
+                for k in [
+                    "batch",
+                    "status",
+                    "stable",
+                    "images_per_second",
+                    "peak_allocated_bytes",
+                    "peak_reserved_bytes",
+                ]
             }
         ),
         flush=True,
     )
+    return result
 
 
-def run(output):
+def run(output, batch8_path, pid):
     if os.uname().sysname != "Linux":
-        raise RuntimeError("Run the queue on MyGPU Linux")
+        raise RuntimeError("Run on MyGPU Linux")
     if output.exists():
-        raise FileExistsError("Choose a fresh suite directory")
+        raise FileExistsError("Choose a fresh follow-up directory")
     output.mkdir(parents=True)
     state = {
-        "status": "running",
-        "started_at": datetime.now(timezone.utc).isoformat(),
-        "git_commit": subprocess.check_output(
+        "status": "waiting_for_batch8",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "source_commit": subprocess.check_output(
             ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
         ).strip(),
+        "batch8_path": str(batch8_path),
+        "batch8_pid": pid,
         "jobs": build_jobs(output),
+        "plan": "No new full training. Finish existing batch8, then warmed short throughput/memory probes.",
     }
-    write_json(output / "suite.json", state)
-    skipped = set()
+    write_json(output / "followup.json", state)
     try:
-        for job in state["jobs"]:
-            if job["batch"] in skipped:
-                job["status"] = "skipped_after_failed_probe"
-                write_json(output / "suite.json", state)
-                continue
+        trained = wait_for_existing_batch8(batch8_path, pid)
+        state["status"] = "analyzing_batch8"
+        write_json(output / "followup.json", state)
+        analysis_path = output / "batch8_analysis"
+        with (output / "analysis.log").open("w") as log:
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "analyze_finetune.py"),
+                    "--run",
+                    str(batch8_path),
+                    "--output",
+                    str(analysis_path),
+                ],
+                cwd=ROOT,
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                check=True,
+            )
+        state["analysis_path"] = str(analysis_path)
+        state.update(
+            status="benchmarking",
+            batch8_result_sha256=sha256(batch8_path / "run.json"),
+            best_model=trained["checkpoints"]["best"],
+        )
+        write_json(output / "followup.json", state)
+        results = []
+        index = 0
+        while index < len(state["jobs"]):
+            job = state["jobs"][index]
             job["status"] = "running"
-            write_json(output / "suite.json", state)
-            run_job(job, output / (Path(job["output"]).name + ".log"))
-            if job["status"] == "skipped_oom":
-                skipped.add(job["batch"])
-            write_json(output / "suite.json", state)
-        completed = [j for j in state["jobs"] if not j["smoke"] and j.get("status") == "completed"]
-        best = max(completed, key=lambda j: j["result"]["best_evaluation"]["custom_AP50_95"])
-        source = Path(best["result"]["checkpoints"]["best"]["path"])
-        target = output / "best_overall.pt"
-        shutil.copy2(source, target)
-        if sha256(target) != best["result"]["checkpoints"]["best"]["sha256"]:
-            raise RuntimeError("Best model copy failed checksum verification")
+            write_json(output / "followup.json", state)
+            results.append(run_probe(job, output))
+            write_json(output / "followup.json", state)
+            index += 1
+            if index == len(state["jobs"]):
+                larger = next_capacity_batch(results)
+                if larger is not None:
+                    state["jobs"].append(
+                        {
+                            "batch": larger,
+                            "kind": "throughput_only",
+                            "output": str(output / f"batch{larger}"),
+                        }
+                    )
+        stable = [r for r in results if r["status"] == "completed" and r.get("stable")]
+        oom = [r["batch"] for r in results if r["status"] == "oom"]
         state.update(
             status="completed",
-            best_overall={
-                "batch": best["batch"],
-                "path": str(target),
-                "sha256": sha256(target),
-                "source": str(source),
-            },
+            highest_tested_stable_batch=max((r["batch"] for r in stable), default=None),
+            first_tested_oom_batch=min(oom) if oom else None,
+            fastest_tested_batch=max(stable, key=lambda r: r["images_per_second"])["batch"]
+            if stable
+            else None,
+            quality_metrics_from_benchmarks=False,
         )
         lines = [
-            "# Batch size comparison",
+            "# Warmed training throughput and capacity",
             "",
-            "Same seed, pretrained initialization, LR, 50 epochs and cleaned validation protocol; effective batch changes, so optimizer-update counts differ.",
+            "Disposable weight updates; no validation or detection-quality interpretation.",
             "",
-            "| Batch | AP50 | AP75 | AP50:95 | Updates | AMP skips | Run hours |",
-            "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+            "| Batch | Status | Images/s | Peak allocated GiB | Peak reserved GiB | Timed AMP skips |",
+            "| --- | --- | ---: | ---: | ---: | ---: |",
         ]
-        for job in completed:
-            result = job["result"]
-            metrics = result["best_evaluation"]
+        for r in results:
+            rate = f"{r['images_per_second']:.2f}" if "images_per_second" in r else "-"
+            allocated = r.get("peak_allocated_bytes", 0) / 1024**3
+            reserved = r.get("peak_reserved_bytes", 0) / 1024**3
             lines.append(
-                f"| {job['batch']} | {metrics['custom_AP50']:.4f} | {metrics['custom_AP75']:.4f} | {metrics['custom_AP50_95']:.4f} | {result['successful_optimizer_steps']} | {result['skipped_amp_steps']} | {result['elapsed_seconds'] / 3600:.2f} |"
+                f"| {r['batch']} | {r['status']} | {rate} | {allocated:.2f} | {reserved:.2f} | {r.get('measured_amp_skips', '-')} |"
             )
         lines += [
             "",
-            f"Best validation-selected checkpoint: batch {best['batch']}, `{target}`.",
-            "",
-            "Custom AP, single seed, validation-selected hyperparameters/checkpoint; not official VisDrone AP or independent test evidence. Per-run summaries include cap hits and fixed P/R thresholds.",
+            "Capacity applies only to current YOLOv12-S, square960, AMP and this sampled/dense stress workload. "
+            "Reserved memory includes allocator cache; desktop/driver allocations are additional. "
+            "Throughput includes prepared-batch loading, forward, backward and optimizer update after20warmup steps, "
+            "measured in three20step blocks; it excludes dataset verification and setup. "
+            "No short-test AP is calculated; choose future batch with headroom, not just the largest fitting batch.",
         ]
         (output / "report.md").write_text("\n".join(lines) + "\n")
     except Exception as error:
         state.update(status="failed", error=str(error))
         raise
     finally:
-        write_json(output / "suite.json", state)
-    print(json.dumps({"event": "suite_completed", "best": state["best_overall"]}), flush=True)
+        write_json(output / "followup.json", state)
+    print(
+        json.dumps(
+            {
+                "status": "completed",
+                "highest_stable": state["highest_tested_stable_batch"],
+                "first_oom": state["first_tested_oom_batch"],
+            }
+        ),
+        flush=True,
+    )
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--batch8-run", type=Path, required=True)
+    parser.add_argument("--batch8-pid", type=int, required=True)
     parser.add_argument("--execute", action="store_true")
     args = parser.parse_args()
     if args.execute:
-        run(args.output.resolve())
+        run(args.output.resolve(), args.batch8_run.resolve(), args.batch8_pid)
     else:
         print(json.dumps(build_jobs(args.output.resolve()), indent=2))

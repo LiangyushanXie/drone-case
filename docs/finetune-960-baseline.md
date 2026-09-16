@@ -82,25 +82,37 @@ hashes, runtime settings, optimizer-update and overflow counts, per-epoch valida
 full log and final evaluation. A single-seed validation gain is evidence for this
 experiment, not independent generalization evidence or proof of superiority to LoRA.
 
-## User-authorized larger-batch comparison
+## Revised follow-up: capacity measurements, not more full training
 
-After batch8, run separate batch16 and batch20 crowded-scene smoke tests, then 50
-epochs for each fitting/stable batch. `run_finetune_suite.py` runs this sequence
-serially and stops on unexpected failures; a probe with explicit CUDA OOM is logged
-and that batch's formal run is skipped. Each formal arm reloads the original weights.
-Effective batch (`nbs`) is 16 or20 respectively, with unchanged LR 0.0003; compare
-both epochs and actual optimizer-update counts. This is a same-epoch experiment,
-not an equal-update/equal-compute experiment. Preserve all best/last checkpoints;
-`best_overall.pt` is a checksum-verified copy of the highest final custom validation
-AP50:95 model. Checkpoints/hyperparameters are selected on validation, not test-dev.
+Bruce cancelled the batch16/20 50-epoch experiments. Preserve the original batch8
+run through its50epochs, final evaluation and best/last checkpoint saving, then
+prioritize pretrained-versus-finetuned P/R, small/occluded misses, new false positives
+and training/validation curves. Short tests must not be interpreted as detection quality.
 
-Launch in the MyGPU SSH terminal with nohup and a durable log so leaving the viewer
-does not terminate the queue. Example (choose a fresh name):
+The old scheduler was stopped/retired individually, without signaling its live batch8
+child. Its original suite manifest was preserved; unstarted downstream jobs are marked
+cancelled. `run_finetune_suite.py` now **attaches read-only** to the supplied existing
+batch8 PID/output and waits for a completed50epoch run.json. It never starts or resumes
+full training. Launch this replacement from the confirmed MyGPU SSH terminal after
+Mac commit/push and MyGPU pull, using a new output directory:
 
 ```bash
-nohup env OMP_NUM_THREADS=8 MKL_NUM_THREADS=8 .venv-runtime/bin/python -u run_finetune_suite.py --execute --output runs/finetune-batch-suite-UNIQUE > runs/finetune-batch-suite-UNIQUE.log 2>&1 < /dev/null &
+.venv-runtime/bin/python run_finetune_suite.py --execute --batch8-run runs/finetune-batch-suite-20260916T1005/batch8 --batch8-pid 239745 --output runs/finetune-capacity-UNIQUE
 ```
 
-Watch the outer log, each batch's log and `progress.json`; `suite.json` records final
-per-job status and best-model provenance. Smoke outputs remain separate from formal
-runs. GPU capacity is measured, not inferred from parameter count or nominal VRAM.
+After batch8 finishes, each batch benchmark runs in an isolated process from the same
+original pretrained weights, with **no validation, no model-quality scores and no saved
+benchmark checkpoint**. `benchmark_finetune.py` uses the same960/full backward/AdamW/AMP
+pipeline, mild augmentations, workers4 and a frozen256-image training-only pool including
+the64most crowded images. Batch8/16/20 are always requested; after stable20, probe24,28,…
+until first OOM/instability or a bounded64. Report the highest *tested* stable batch and
+first tested OOM; do not assert an exact untested limit.
+
+Per batch:20warmup training updates, CUDA synchronization, three measured20-step blocks,
+then3dense-label stress updates. Throughput includes data retrieval, preprocessing,
+forward/backward and optimizer update after warmup; excludes setup/hash checks. Only
+full batches count. Report each block and aggregate images/s, measured success/AMP skip
+counts, peak PyTorch allocated and reserved memory, dense stress and any OOM stage.
+The stability flag requires at most1timed AMP skip and all3stress updates to succeed.
+Discard updated benchmark weights. Capacity is specific to current model, resolution,
+precision, label density and other GPU users; prefer operating headroom over saturation.
