@@ -57,3 +57,11 @@ Original release: [VisDrone / Tianjin University AISKYEYE](https://github.com/Vi
 Cite: Zhu et al., *Detection and Tracking Meet Drones Challenge*, IEEE TPAMI, 2021, DOI [10.1109/TPAMI.2021.3119563](https://doi.org/10.1109/TPAMI.2021.3119563).
 
 Dataset rights remain with the original authors. This copy is for noncommercial research and learning; upstream use conditions apply. No new license over the underlying imagery is asserted by this repository.
+
+## Car fine-tuning data preparation
+
+`prepare_car_data.py` produces a reproducible, source-preserving car-only view after
+human review of conflicting labels. See [the data contract](docs/car-data-preparation.md)
+for the selected duplicates, frozen cleaned validation protocol, verification command,
+and required ignore-aware trainer integration. The prepared data stays local under
+`data/prepared/`; it is not a completed fine-tuning experiment or a stock-YOLO-ready dataset.

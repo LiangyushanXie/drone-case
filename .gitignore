@@ -36,3 +36,6 @@ AGENTS.md
 *.part
 *.assembling
 .ruff_cache/
+
+# Reproducible derived data stays local; preserve tracked raw data.
+data/prepared/
