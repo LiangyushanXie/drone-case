@@ -81,3 +81,26 @@ Do not publish checkpoint weights or duplicate data. Save commit/data/config/wei
 hashes, runtime settings, optimizer-update and overflow counts, per-epoch validation,
 full log and final evaluation. A single-seed validation gain is evidence for this
 experiment, not independent generalization evidence or proof of superiority to LoRA.
+
+## User-authorized larger-batch comparison
+
+After batch8, run separate batch16 and batch20 crowded-scene smoke tests, then 50
+epochs for each fitting/stable batch. `run_finetune_suite.py` runs this sequence
+serially and stops on unexpected failures; a probe with explicit CUDA OOM is logged
+and that batch's formal run is skipped. Each formal arm reloads the original weights.
+Effective batch (`nbs`) is 16 or20 respectively, with unchanged LR 0.0003; compare
+both epochs and actual optimizer-update counts. This is a same-epoch experiment,
+not an equal-update/equal-compute experiment. Preserve all best/last checkpoints;
+`best_overall.pt` is a checksum-verified copy of the highest final custom validation
+AP50:95 model. Checkpoints/hyperparameters are selected on validation, not test-dev.
+
+Launch in the MyGPU SSH terminal with nohup and a durable log so leaving the viewer
+does not terminate the queue. Example (choose a fresh name):
+
+```bash
+nohup env OMP_NUM_THREADS=8 MKL_NUM_THREADS=8 .venv-runtime/bin/python -u run_finetune_suite.py --execute --output runs/finetune-batch-suite-UNIQUE > runs/finetune-batch-suite-UNIQUE.log 2>&1 < /dev/null &
+```
+
+Watch the outer log, each batch's log and `progress.json`; `suite.json` records final
+per-job status and best-model provenance. Smoke outputs remain separate from formal
+runs. GPU capacity is measured, not inferred from parameter count or nominal VRAM.

@@ -3,6 +3,7 @@ from pathlib import Path
 
 from finetune_metrics import interpolated_ap, match_overlaps, summarize_records
 from run_finetune import load_training_config, training_arguments
+from run_finetune_suite import build_jobs
 
 
 class FineTuneTests(unittest.TestCase):
@@ -52,6 +53,23 @@ class FineTuneTests(unittest.TestCase):
         self.assertEqual(
             training_arguments(c, Path("/tmp/data.yaml"), Path("/tmp/run"), batch=4)["nbs"], 8
         )
+
+    def test_larger_batch_has_same_lr_and_matching_effective_batch(self):
+        config = load_training_config()
+        for batch in (16, 20):
+            args = training_arguments(config, Path("/tmp/data.yaml"), Path("/tmp/run"), batch=batch)
+            self.assertEqual(
+                (args["batch"], args["nbs"], args["lr0"], args["epochs"]),
+                (batch, batch, 0.0003, 50),
+            )
+
+    def test_batch_suite_order_and_separate_initialization_runs(self):
+        jobs = build_jobs(Path("/tmp/suite"))
+        self.assertEqual(
+            [(j["batch"], j["smoke"]) for j in jobs],
+            [(8, False), (16, True), (16, False), (20, True), (20, False)],
+        )
+        self.assertEqual(len(set(j["output"] for j in jobs)), len(jobs))
 
 
 if __name__ == "__main__":

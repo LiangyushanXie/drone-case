@@ -56,7 +56,7 @@ def training_arguments(config, dataset_yaml, output, smoke=False, batch=None):
         "epochs": 1 if smoke else config["epochs"],
         "imgsz": config["imgsz"],
         "batch": batch or config["batch"],
-        "nbs": config["effective_batch"],
+        "nbs": max(config["effective_batch"], batch or config["batch"]),
         "device": 0,
         "workers": config["workers"],
         "optimizer": config["optimizer"],
@@ -294,7 +294,7 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path)
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--smoke", action="store_true")
-    parser.add_argument("--batch", type=int, choices=[2, 4, 8])
+    parser.add_argument("--batch", type=int, choices=[2, 4, 8, 16, 20])
     args = parser.parse_args()
     config = load_training_config(args.config)
     if args.execute:
