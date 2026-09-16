@@ -65,3 +65,8 @@ human review of conflicting labels. See [the data contract](docs/car-data-prepar
 for the selected duplicates, frozen cleaned validation protocol, verification command,
 and required ignore-aware trainer integration. The prepared data stays local under
 `data/prepared/`; it is not a completed fine-tuning experiment or a stock-YOLO-ready dataset.
+
+## 960 full fine-tuning baseline
+
+The ignore-aware training entry point is `run_finetune.py` (dry run by default).
+See [configuration, protocol and MyGPU commands](docs/finetune-960-baseline.md).
