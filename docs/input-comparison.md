@@ -104,6 +104,23 @@ Saved predictions can be rendered again on Mac with Pillow:
 This leaves the legacy run_inference.py entry point intact for a baseline-only
 preview. Repeatedly inspected development images are not an untouched final test.
 
+## Higher confidence cutoffs on saved results
+
+Run the dependency-free cached analysis in the MyGPU VS Code SSH terminal:
+
+    cd /home/brucex/drone-case
+    .venv-runtime/bin/python sweep_confidence.py --thresholds 0.25 0.35 0.45
+
+This preserves the original run and writes a new confidence-sweep directory with
+summary.csv, per_image.csv, summary.json, report.md and analysis.json. It filters
+the saved post-NMS boxes and recomputes matching with the original IoU 0.50,
+ignore coverage 0.50 and original NMS settings 0.70. No model is loaded and NMS is
+not repeated. The 0.25 results must reproduce the source TP/FP/FN and ignore counts.
+Confidence cutoffs below the original 0.25 are rejected because those candidates
+were not saved. These are partial operating-point comparisons, not a full PR curve
+or new inference timings. The model-run commit and analysis commit are recorded
+separately, with hashes of all source artifacts.
+
 ## Primary references
 
 - [SAHI authors: slicing-aided inference](https://arxiv.org/abs/2202.06934).
