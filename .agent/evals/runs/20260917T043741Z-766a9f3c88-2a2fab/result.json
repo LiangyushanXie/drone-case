@@ -1,0 +1,172 @@
+{
+  "base_head": "3e54bb5317cf6ba35737e1f49915b27d97988eb2",
+  "candidate_fingerprint": "766a9f3c88471d9ec51d12b35cd896a6baa575389cde53bb519061e41a7265bd",
+  "context_fingerprint": "bd9e20ed4eb49fd5728f5d4081590807f848918cd4acc057fd2b7426b2ec8194",
+  "created_at": "2026-09-17T04:37:41Z",
+  "dimensions": [
+    {
+      "evidence": "fresh passing evidence",
+      "id": "verification",
+      "score": 100,
+      "title": "Verification and evidence freshness",
+      "weight": 25
+    },
+    {
+      "evidence": "state and control plane valid",
+      "id": "harness_integrity",
+      "score": 100,
+      "title": "Harness state and control-plane integrity",
+      "weight": 20
+    },
+    {
+      "evidence": "index matches relevant worktree and secret scan passed",
+      "id": "change_hygiene",
+      "score": 100,
+      "title": "Candidate boundary and sensitive-data hygiene",
+      "weight": 15
+    },
+    {
+      "evidence": "every completed acceptance item has evidence",
+      "id": "acceptance_evidence",
+      "score": 100,
+      "title": "Acceptance evidence integrity",
+      "weight": 15
+    },
+    {
+      "evidence": "review packets, writer lease, and blockers are clear",
+      "id": "review_and_lease",
+      "score": 100,
+      "title": "Review, blocker, and writer-lease integrity",
+      "weight": 15
+    },
+    {
+      "evidence": "state revision and event timeline are present",
+      "id": "traceability",
+      "score": 100,
+      "title": "Task and event traceability",
+      "weight": 10
+    }
+  ],
+  "duration_ms": 2362,
+  "eval_id": "EVL-ec57d03cbf9f4791835e6786022a2fab",
+  "hard_gates": [
+    {
+      "details": [],
+      "id": "verification_fresh",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "harness_valid",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "lease_boundary",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "no_unstaged_product_changes",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "secret_scan",
+      "passed": true
+    },
+    {
+      "details": [],
+      "id": "no_recorded_blockers",
+      "passed": true
+    }
+  ],
+  "harness_version": "astra-baseline-v2",
+  "interpretation": "Engineering workflow checks, not model quality or paper reproduction evidence",
+  "pass_threshold": 85,
+  "profile_rubrics": [
+    {
+      "dimensions": [
+        {
+          "id": "sources",
+          "title": "Source quality and claim traceability",
+          "weight": 20
+        },
+        {
+          "id": "experimental_validity",
+          "title": "Experimental design and validity",
+          "weight": 25
+        },
+        {
+          "id": "reproducibility",
+          "title": "Reproducibility and provenance",
+          "weight": 20
+        },
+        {
+          "id": "uncertainty",
+          "title": "Uncertainty and alternative explanations",
+          "weight": 15
+        },
+        {
+          "id": "synthesis",
+          "title": "Knowledge synthesis and transfer",
+          "weight": 20
+        }
+      ],
+      "note": "Semantic scoring is performed by a triggered independent review, not by the commit hook.",
+      "profile": "research-learning",
+      "status": "advisory_not_scored"
+    },
+    {
+      "dimensions": [
+        {
+          "id": "correctness",
+          "title": "Algorithm and product correctness",
+          "weight": 25
+        },
+        {
+          "id": "tests",
+          "title": "Test depth and regression coverage",
+          "weight": 20
+        },
+        {
+          "id": "architecture",
+          "title": "Architecture and maintainability",
+          "weight": 15
+        },
+        {
+          "id": "evaluation",
+          "title": "Benchmark and model-evaluation validity",
+          "weight": 15
+        },
+        {
+          "id": "runtime",
+          "title": "Runtime, deployment, and operability",
+          "weight": 15
+        },
+        {
+          "id": "documentation",
+          "title": "Technical documentation and handoff",
+          "weight": 10
+        }
+      ],
+      "note": "Semantic scoring is performed by a triggered independent review, not by the commit hook.",
+      "profile": "ai-engineering",
+      "status": "advisory_not_scored"
+    }
+  ],
+  "schema_version": 1,
+  "scope": "staged",
+  "score": 100,
+  "source_root": "/Users/brucex/(project test)/ai-algorithm-research/Drone case",
+  "staged_paths": [
+    "configs/test_dev_960.json",
+    "docs/test-dev-960.md",
+    "run_finetune.py",
+    "run_test_evaluation.py",
+    "tests/test_test_evaluation.py"
+  ],
+  "status": "pass",
+  "task_id": "test-dev-960-20260917",
+  "verification_bundle": ".agent/evidence/verification/20260917T043735Z-9f501bed"
+}

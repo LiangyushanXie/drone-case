@@ -42,7 +42,7 @@ def verify_prepared(config):
     if spec["included_counts"] != {"train": 6468, "val": 547, "test-dev": 1610}:
         raise ValueError("Unexpected split membership")
     print(
-        "Frozen dataset verified: train 6468 / val 547; test-dev is not loaded for training/evaluation",
+        "Frozen dataset verified: train 6468 / val 547 / test-dev 1610. Integrity check only; inference split is selected separately.",
         flush=True,
     )
     return root, spec
@@ -142,7 +142,9 @@ def create_dataset_yaml(dataset, output, smoke):
     return target
 
 
-def evaluate(weights_or_model, dataset_yaml, output, config):
+def evaluate(weights_or_model, dataset_yaml, output, config, split="val"):
+    if split not in {"val", "test"}:
+        raise ValueError("Evaluation split must be explicit val or test")
     from finetune_runtime import IgnoreValidator, write_json
 
     output.mkdir()
@@ -164,7 +166,7 @@ def evaluate(weights_or_model, dataset_yaml, output, config):
             "plots": False,
             "save_json": False,
             "task": "detect",
-            "split": "val",
+            "split": split,
             "verbose": False,
         },
     )
